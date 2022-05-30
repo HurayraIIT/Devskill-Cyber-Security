@@ -13,6 +13,9 @@ sudo apt upgrade -y
 sudo apt install neofetch vim gcc g++ net-tools p7zip-full
 
 # Finish
+sudo apt autoremove
+clear
+
 whoami
 pwd
 neofetch 
