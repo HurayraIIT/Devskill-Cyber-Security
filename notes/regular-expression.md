@@ -22,7 +22,7 @@ Regular expressions can extract information from text such as code or log files.
 
 -  `[0-6]` - this will match any character in the range 0 - 6
 
--  `[a-fP-T2-8] - this will match any character in the range a - f, P - T and 2 - 8
+-  `[a-fP-T2-8]` - this will match any character in the range a - f, P - T and 2 - 8
 
 -  `[^A-Ca-c]` - this will match a single character excluding A-C and a-c
 
