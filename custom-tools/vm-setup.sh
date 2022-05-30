@@ -10,10 +10,12 @@ sudo apt update
 sudo apt upgrade -y
 
 # Install basic tools
-sudo apt install neofetch vim gcc g++ net-tools p7zip-full
+sudo apt install -y neofetch vim gcc g++ net-tools rar unrar p7zip-full p7zip-rar python3-pip nmap ncdu nnn openjdk-11-jdk 
+
+sudo snap install btop
 
 # Finish
-sudo apt autoremove
+sudo apt autoremove -y
 clear
 
 whoami
