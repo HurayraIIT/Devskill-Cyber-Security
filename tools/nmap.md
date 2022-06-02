@@ -26,6 +26,140 @@ If we want to know which ports are open and running which services, we need to p
 
 Nmap scripting engine can scan for vulnerabilities on the ports we find, and on some cases exploit the vulnerability directly. 
 
+## Nmap switches
+
+- For SYN scan: `-sS`
+- For UDP scan: `-sU`
+- OS detection: `-O`
+- Service version detection: `-sV`
+- To increase verbosity: `-v`
+- Verbosity level 2: `-vv`
+- Save results in 3 format: `-oA`
+- Save in normal format: `-oN`
+- Save in grepable format: `-oG`
+- Aggressive mode (Service detection + OS detection + Traceroute + Common script scanning): `-A`
+- Timing template: `-T5` 
+- Scan port 80: `-p 80`
+- Scan ports 1000-1500: `-p 1000-1500`
+- Scan all ports: `-p-`
+- Activate scripts from vuln: `--script=vuln`
+
+## Scan Types:
+
+There are 3 basic scan types:
+1. TCP connect scan: `-sT`
+2. SYN "Half-open" scan: `-sS`
+3. UDP scan: `-sU`
+
+Some less common scan types:
+4. TCP Null scan: `-sN`
+5. TCP FIN scan: `-sF`
+6. TCP Xmas scan: `-sX`
+7. ICMP ping scan
+
+## TCP Connect Scan
+
+The TCP connect scan uses the 3 way handshake to find status of a port. 
+
+* **When port is open:** At first it sends a **SYN** packet to the target port, if the target port responds with a **SYN/ACK** packet, then the port is open. In that case nmap sends an **ACK** packet and completes the 3 way handshake.
+
+* **When port is closed:** If the target does responds to the **SYN** packet with a **RST** (reset) packet then the port is closed or unused.
+
+* **When a port is filtered by a firewall:** If the target port does not respond at all to the **SYN** packet then the port might be hiding behind a firewall, in which case, the port is marked as **filtered.** 
+
+However, its very easy to configure the firewall to respond with a **RST** packet, which can make it difficult for nmap.
+
+## SYN scan (Half-open/stealth scan):
+
+These scan are similar to TCP connect scan but differs slightly.
+
+* SYN scan returns a **RST** packet after receiving a **SYN/ACK** from the server.
+* It can be used to bypass old IDSs(Intrusion Detection System).
+* Some applications will not log SYN scans.
+* SYN scan is significantly faster than TCP connect scan.
+
+There are some drawbacks here:
+* SYN scan requires SUDO privilege because it has to create raw packets.
+* Unstable services may break due to SYN scan.
+
+## UDP scan:
+
+UDP scans are stateless. It throws UDP packets and hopes that it makes it. If the server responds with an ICMP ping packet, then the port is **closed**. But if the server does not respond then the port is **open|filtered** and the UDP packet is sent a second time.
+
+UDP scans take a lot of time.
+
+## NULL, FIN and XMAS scan:
+
+These scans are even stealthier than SYN scan. So these scans are used for firewall evasion.
+
+### * NULL SCAN
+
+NULL scans (-sN) are when the TCP request is sent with no flags set at all. As per the RFC, the target host should respond with a **RST** if the port is **closed**.
+
+### * FIN SCAN
+
+FIN scans (-sF) work in an almost identical fashion; however, instead of sending a completely empty packet, a request is sent with the FIN flag (usually used to gracefully close an active connection). Once again, Nmap expects a **RST** if the port is **closed**.
+
+### * XMAS SCAN
+
+Xmas scans (-sX) send a malformed TCP packet and expects a RST response for closed ports. It's referred to as an xmas scan as the flags that it sets (PSH, URG and FIN) give it the appearance of a blinking christmas tree when viewed as a packet capture in Wireshark. 
+
+## ICMP Network Scan:
+
+ICMP Scan (`-sn`) performs a "ping sweep" of the target.
+
+> To ping sweep an IP range:
+`nmap -sn 192.168.0.1-254`
+`nmap -sn 192.168.0.0/24`
+`nmap -sn 172.16.0.0/16` 
+
+## NSE Scripts:
+
+These are written in LUA. NSE scripts can be used to do a variety of things: from scanning for vulnerabilities, to automating exploits for them. The NSE is particularly useful for reconnaisance. 
+
+* safe:- Won't affect the target
+intrusive:- Not safe: likely to affect the target
+* vuln:- Scan for vulnerabilities
+* exploit:- Attempt to exploit a vulnerability
+* auth:- Attempt to bypass authentication for running services (e.g. Log into an FTP server anonymously)
+* brute:- Attempt to bruteforce credentials for running services
+* discovery:- Attempt to query running services for further information about the network (e.g. query an SNMP server).
+
+[more here](https://nmap.org/book/nse-usage.html)
+
+## Working with the NSE
+
+To use a script:
+`nmap -p 80 --script=vuln target.com`
+`nmap -p 80 --script http-put --script-args http-put.url='/dav/shell.php',http-put.file='./shell.php'`
+
+To know about a script:
+`nmap --script-help <script-name>`
+
+## Searching for Scripts
+
+Scripts can be found at these two locations:
+1. [Nmap website](https://nmap.org/nsedoc/)
+2. In the linux machine: `/usr/share/nmap/scripts`
+
+We can find scripts in the file: `/usr/share/nmap/scripts/script.db` by using grep: `grep "ftp" /usr/share/nmap/scripts/script.db`
+
+The same thing can be done with `ls`: `ls -l /usr/share/nmap/scripts/*ftp*`
+
+To search for categories of script: `grep "safe" /usr/share/nmap/scripts/script.db`
+
+To download missing scripts or to add my own scripts to nmap:
+
+Download using `sudo wget -O /usr/share/nmap/scripts/<script-name>.nse https://svn.nmap.org/nmap/scripts/<script-name>.nse`
+then do this: `nmap --script-updatedb`
+
+## Firewall Evasion
+
+* `-Pn` to avoid ping scan and treat all ports as alive. It takes a very long time.
+* `-f` fragment the packets
+* `--mtu <number multiple of 8>` to specify a maximum transmission unit size.
+* `--scan-delay <time>ms` to add a delay between packets
+* `--badsum` to generate an invalid checksum. Any real TCP/IP stack will not respond, but a firewall will.
 
 ## Nmap default help documentation
 
