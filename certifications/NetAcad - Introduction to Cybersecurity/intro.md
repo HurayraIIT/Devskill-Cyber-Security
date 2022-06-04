@@ -27,3 +27,10 @@ You'll Learn These Core Skills:
 **Status:** Completed
 
 **Time Taken:** 2 hours
+
+**Module 2 :** Attacks, concepts and tecniques
+
+**Status:** Completed
+
+**Time Taken:** 2 hours
+
