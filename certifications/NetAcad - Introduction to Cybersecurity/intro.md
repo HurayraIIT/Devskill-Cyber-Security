@@ -47,3 +47,9 @@ You'll Learn These Core Skills:
 **Status:** Completed
 
 **Time Taken:** 1 hour
+
+**Module 5:** Will Your Future Be in Cybersecurity?
+
+**Status:** Completed
+
+**Time Taken:** 1 hour
