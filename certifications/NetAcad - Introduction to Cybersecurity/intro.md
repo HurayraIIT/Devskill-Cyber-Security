@@ -2,6 +2,8 @@
 
 Course link: https://www.netacad.com/courses/cybersecurity/introduction-cybersecurity
 
+Actual Course Link: https://skillsforall.com/course/introduction-to-cybersecurity
+
 **Length:**  15 hours
 
 **Cost:** Free*
@@ -34,3 +36,8 @@ You'll Learn These Core Skills:
 
 **Time Taken:** 2 hours
 
+**Module 3:** Protecting your Data and Privacy
+
+**Status:** Completed
+
+**Time Taken:** 2.5 hours
