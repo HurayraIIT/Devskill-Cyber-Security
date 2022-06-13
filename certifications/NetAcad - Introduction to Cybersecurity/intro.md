@@ -41,3 +41,9 @@ You'll Learn These Core Skills:
 **Status:** Completed
 
 **Time Taken:** 2.5 hours
+
+**Module 4:** Protecting the Organization
+
+**Status:** Completed
+
+**Time Taken:** 1 hour
