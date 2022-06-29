@@ -108,7 +108,7 @@ def get_random_string(length):
 
 def string_data_generator():
   
-  total_strings = 10000
+  total_strings = 10
   result = "option_id,option_name,option_value,autoload\n"
   main_string = ""
   base_string = ""
@@ -120,11 +120,10 @@ def string_data_generator():
   
   mid_string = f'a:{total_strings}:\u007b{base_string}\u007d'
   main_string = f'"s:{len(mid_string)}:""{mid_string}"";"'
-  result += f'205,betterdocs_search_data,{main_string},yes\n'
+  result += f'1,betterdocs_search_data,{main_string},yes\n'
   with open("search_data_previous_db.csv", "w") as f:
     f.write(result)
 
 string_data_generator()
 
 
-    
