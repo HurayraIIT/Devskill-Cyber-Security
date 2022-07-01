@@ -70,6 +70,8 @@ for i in range(5, 15):
   doc_ids.append(i)
 for i in range(26, 42):
   doc_ids.append(i)
+for i in range(93, 101):
+  doc_ids.append(i)
   
 print(doc_ids)
   
@@ -112,14 +114,23 @@ def string_data_generator():
   result = "option_id,option_name,option_value,autoload\n"
   main_string = ""
   base_string = ""
+  s = set()
   
   for i in range(total_strings):
     search_keyword = get_random_string(random.randint(4, 20))
+    while search_keyword in s:
+      search_keyword = get_random_string(random.randint(4, 20))
+    
+    s.add(search_keyword)
+    
     search_amount = random.randint(1, 30)
-    base_string += f's:{len(search_keyword)}:""{search_keyword}"";i:{search_amount};'
+    
+    base_string += f's:{len(search_keyword)}:"{search_keyword}";i:{search_amount};'
   
   mid_string = f'a:{total_strings}:\u007b{base_string}\u007d'
-  main_string = f'"s:{len(mid_string)}:""{mid_string}"";"'
+  
+  main_string = f's:{len(mid_string)}:"{mid_string}";'
+  print(main_string)
   result += f'231,betterdocs_search_data,{main_string},yes\n'
   with open("search_data_previous_db.csv", "w") as f:
     f.write(result)
