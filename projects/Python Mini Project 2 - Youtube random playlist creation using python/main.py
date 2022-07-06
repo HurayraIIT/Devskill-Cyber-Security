@@ -12,6 +12,8 @@ print(filename)
 # Get video duration
 duration = video.duration
 print(duration) # 00:00:44
+# Convert it into integer(seconds)
+duration_in_secs = int(duration[:2])*60*60 + int(duration[3:5])*60 + int(duration[6:])  # Improve it later
 
 # use vlc to play the media
 media_player = vlc.MediaPlayer()
@@ -19,6 +21,5 @@ media = vlc.Media(filename)
 media_player.set_media(media)
 media_player.play()
 
-# Find the duration of the video in integer and play the video for that duration
-# 00:00:44 to 44
-time.sleep(int(duration[:2])*60*60 + int(duration[3:5])*60 + int(duration[6:]))
+# Play the video for video duration length
+time.sleep(duration_in_secs)

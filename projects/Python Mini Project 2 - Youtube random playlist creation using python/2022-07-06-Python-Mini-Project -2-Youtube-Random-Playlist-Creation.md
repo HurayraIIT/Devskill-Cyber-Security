@@ -103,13 +103,40 @@ url = "https://www.youtube.com/watch?v=G3uclekof0c"
 
 video = pafy.new(url)
 worst_quality = video.getworst()
-worst_quality.download(quiet=False)
+
+# Download the video
+filename = worst_quality.download(quiet=False, filepath="name." + worst_quality.extension)
+print(filename)
+```
+
+Then let's find out the video duration and convert that into seconds:
+
+```py
+
+# Get video duration
+duration = video.duration
+print(duration) # 00:00:44
+# Convert it into integer(seconds)
+duration_in_secs = int(duration[:2])*60*60 + int(duration[3:5])*60 + int(duration[6:])  # Improve it later
+
+```
+
+Finally play the video:
+
+```py
+
+# use vlc to play the media
+media_player = vlc.MediaPlayer()
+media = vlc.Media('name.mp4')
+media_player.set_media(media)
+media_player.play()
+
+# Play the video for video duration length
+time.sleep(duration_in_secs)
 ```
 
 
 
-
-
 Resource Credit:
-
 1. [geeksforgeeks](https://www.geeksforgeeks.org/playing-youtube-video-using-python/)
+2. [pafy doc](https://pypi.org/project/pafy/)
